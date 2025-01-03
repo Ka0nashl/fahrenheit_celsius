@@ -4,9 +4,9 @@ fn main() {
     
     println!("Welcome to the temperature converter !");
 
-    loop {
+    'outer: loop {
 
-        println!("Please choose from which unit you want to convert :\n(1) Celsius to Fahrenheit\n(2) Fahrenheit to Celsius\nOr if you want to leave : (L)");
+        println!("Please choose from which unit you want to convert :\n(1) Fahrenheit to Celsius\n(2) Celsius to Fahrenheit\nOr if you want to leave : (L)");
 
         let mut f_c = String::new();
 
@@ -14,7 +14,7 @@ fn main() {
             .read_line(&mut f_c)
             .expect("Failed to read line");
 
-        let f_c = f_c.trim();
+        let f_c = f_c.trim().to_uppercase();
         
         if f_c == "L" {
             break
@@ -50,24 +50,26 @@ fn main() {
             println!("You have to choose either 1 or 2!");
             continue
         }
-
-        println!("Do you wish to restart the convertor ?\nY/N ?");
         
-        let mut restart = String::new();
+        loop {
 
-        io::stdin()
-            .read_line(&mut restart)
-            .expect("Failed to read line");
+            println!("Do you wish to restart the convertor ?\nY/N ?");
+        
+            let mut restart = String::new();
 
-        let restart = restart.trim();
+            io::stdin()
+                .read_line(&mut restart)
+                .expect("Failed to read line");
 
-        if restart == "Y" {
-           continue 
-        } else if restart == "N" {
-            break
-        } else {
-            println!("You can only say Yes or No.");
+            let restart = restart.trim().to_uppercase();
+            
+            if restart == "Y" {
+               continue 'outer;
+            } else if restart == "N" {
+                break 'outer;
+            } else {
+                println!("You can only say Yes or No.");
+            }
         }
-    
     }
 }
